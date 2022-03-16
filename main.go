@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/homedepot/flop"
 	"github.com/xuri/excelize/v2"
 )
 
@@ -10,21 +11,35 @@ func main() {
 	toProcess := []string{
 		"./sample/InventorySnapshot.xlsx",
 	}
+	template := "./template/template.xlsx"
+	out := "./inventory.xlsx"
+
+	err := flop.Copy(template, out, flop.Options{MkdirAll: true})
+
+	outFile, err := excelize.OpenFile(out)
+	if err != nil {
+		fatal(err, "failed to open template file: %v", err)
+	}
+	defer outFile.Close()
 
 	for _, fileName := range toProcess {
-		err := processFile(fileName)
+		err := processFile(fileName, outFile)
 		if err != nil {
 			fatal(err, "cannot process %s", fileName)
 		}
 		info("processed %s", fileName)
 	}
 
+	err = outFile.Save()
+	if err != nil {
+		fatal(err, "failed to save out file %s: %v", out, err)
+	}
 }
 
-func processFile(fileName string) error {
-	f, err := excelize.OpenFile(fileName, excelize.Options{})
+func processFile(inFile string, out *excelize.File) error {
+	f, err := excelize.OpenFile(inFile, excelize.Options{})
 	if err != nil {
-		fatal(err, "failed to open file %s", fileName)
+		fatal(err, "failed to open file %s", inFile)
 	}
 	defer f.Close()
 
@@ -45,17 +60,10 @@ func processFile(fileName string) error {
 		return err
 	}
 
-	err = writeTemplate(products)
+	err = writeTemplate(out, products)
 	if err != nil {
 		return fmt.Errorf("failed to write to template: %w", err)
 	}
 
-	return nil
-}
-
-func writeTemplate(products []product) error {
-	for _, p := range products {
-		fmt.Printf(" -> JMTDEBUG: %s: %+v\n", "product", p) // FIXME: (JMT) testing
-	}
 	return nil
 }

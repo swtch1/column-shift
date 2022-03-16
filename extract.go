@@ -48,26 +48,17 @@ func extractRow(row []string) (product, error) {
 		return product{}, fmt.Errorf("invalid number of columns in row")
 	}
 
-	// for i, v := range row {
-	// 	fmt.Printf(" -> JMTDEBUG: %d: %v\n", i, v) // FIXME: (JMT) testing
-	// }
-
 	p := product{
-		name:              row[0],
-		sku:               row[2],
-		productCode:       "",
-		price:             row[14],
-		cost:              row[15],
-		category:          row[3],
-		taxName:           row[0],
-		ebt:               false,
-		vendorName:        row[6],
-		partialQuantity:   false,
-		autoItemDiscounts: "",
-		quantityOnHand:    row[7],
-		minReorderPoint:   row[8],
-		maxReorderPoint:   row[8],
-		otherItemFeatures: "",
+		name:            row[0],
+		sku:             row[2],
+		price:           row[14],
+		cost:            row[15],
+		category:        row[3],
+		taxName:         row[0],
+		vendorName:      row[6],
+		quantityOnHand:  row[7],
+		minReorderPoint: row[8],
+		maxReorderPoint: row[8],
 	}
 
 	if p.minReorderPoint == "" {
