@@ -1,4 +1,17 @@
-# Column Shift
+# Silver Lining ETF
 
-Shift the order of columns in an excel speadsheet.  For a specific purpose so the implementation is pretty specific.
+This application serves a specific purpose, to convert data from several
+speadsheets into a template in another format.
+
+## Building
+
+```shell
+make build
+```
+
+## Usage
+
+- place in a directory with spreadsheets
+- execute
+- read `inventory.xlsx`
 

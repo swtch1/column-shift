@@ -36,8 +36,6 @@ func extractRows(rows [][]string) ([]product, error) {
 			return nil, fmt.Errorf("failed to extract row %d: %w", i+1, err)
 		}
 		products = append(products, product)
-
-		// break // FIXME: (JMT) testing
 	}
 
 	return products, nil

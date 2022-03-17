@@ -6,15 +6,19 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
+const headerLen = 4
+
+var row = headerLen
+
 // writeTemplate writes products to the template file.  We know exactly what
 // this looks like so we can make a lot of assumptions.
 func writeTemplate(file *excelize.File, products []product) error {
-	for i, p := range products {
-		row := i + 4
+	for _, p := range products {
 		err := setRowValues(file, row, p)
 		if err != nil {
 			return fmt.Errorf("failed to set values on row %d: %w", row, err)
 		}
+		row += 1
 	}
 
 	return nil
